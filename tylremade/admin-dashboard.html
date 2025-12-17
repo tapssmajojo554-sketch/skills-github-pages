@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Tyler Made Plumbing</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="admin-nav">
+    <a href="index.html">🏠 Back to Site</a>
+    <a href="#" id="logout">🚪 Logout</a>
+  </nav>
+
+  <section id="dashboard">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Job Applications -->
+    <div class="dashboard-section">
+      <h2>Job Applications Inbox</h2>
+      <table class="dashboard-table" id="applicationsTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Job Description</th>
+            <th>Urgency</th>
+            <th>Date Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled dynamically with JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Email Messages -->
+    <div class="dashboard-section">
+      <h2>Email Messages</h2>
+      <table class="dashboard-table" id="emailsTable">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Sender</th>
+            <th>Date Received</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled dynamically with JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    // ✅ Enforce login check
+    window.onload = function() {
+      if (localStorage.getItem("loggedIn") !== "true") {
+        alert("Access denied. Please log in first.");
+        window.location.href = "admin-login.html";
+        return;
+      }
+
+      // Load job applications
+      const apps = JSON.parse(localStorage.getItem("applications")) || [];
+      const appsTable = document.querySelector("#applicationsTable tbody");
+
+      if (apps.length === 0) {
+        appsTable.innerHTML = "<tr><td colspan='5'>No job applications found</td></tr>";
+      } else {
+        apps.forEach(app => {
+          appsTable.innerHTML += `
+            <tr>
+              <td>${app.name}</td>
+              <td>${app.email}</td>
+              <td>${app.job}</td>
+              <td>${app.urgency}</td>
+              <td>${app.submitted_at}</td>
+            </tr>`;
+        });
+      }
+
+      // Load email messages (if you add a contact form later)
+      const emails = JSON.parse(localStorage.getItem("emails")) || [];
+      const emailsTable = document.querySelector("#emailsTable tbody");
+
+      if (emails.length === 0) {
+        emailsTable.innerHTML = "<tr><td colspan='4'>No emails found</td></tr>";
+      } else {
+        emails.forEach(email => {
+          emailsTable.innerHTML += `
+            <tr>
+              <td>${email.subject}</td>
+              <td>${email.message}</td>
+              <td>${email.sender}</td>
+              <td>${email.received_at}</td>
+            </tr>`;
+        });
+      }
+    };
+
+    // ✅ Logout button clears login state
+    document.getElementById("logout").addEventListener("click", function() {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("adminUser");
+      window.location.href = "admin-login.html";
+    });
+  </script>
+</body>
+</html>

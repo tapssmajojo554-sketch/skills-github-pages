@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Access | Tyler Made Plumbing</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+  <section id="admin-login">
+    <div class="login-container">
+      <h2>🔒 Admin Access</h2>
+      <form id="login-form">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+        <button type="submit">Login</button>
+      </form>
+      <p id="error-message" style="color:red;"></p>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // Hardcoded credentials (you can change these)
+      const validUsername = "admin";
+      const validPassword = "secure123";
+
+      if (username === validUsername && password === validPassword) {
+        // Save login state in localStorage
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("adminUser", username);
+
+        // Redirect to dashboard
+        window.location.href = "admin-dashboard.html";
+      } else {
+        document.getElementById("error-message").textContent = "Invalid username or password.";
+      }
+    });
+  </script>
+</body>
+</html>
